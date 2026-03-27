@@ -10,6 +10,9 @@ class AppTheme {
   static const Color textPrimary = Color(0xFFFFFFFF);
   static const Color textSecondary = Color(0xFFB3B3B3);
   static const Color accentGreen = Color(0xFF1ED760);
+  static const Color onboardingOrange = Color(0xFFFF7A00);
+  static const Color pureWhite = Color(0xFFFFFFFF);
+  static const Color pureBlack = Color(0xFF000000);
   
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
