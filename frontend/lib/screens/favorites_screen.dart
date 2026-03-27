@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/music_provider.dart';
-import '../widgets/music_card.dart';
+import '../theme/app_theme.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
@@ -9,49 +9,107 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF121212),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text('Liked Songs'),
-      ),
       body: Consumer<MusicProvider>(
         builder: (context, musicProvider, _) {
-          if (musicProvider.favoriteSongs.isEmpty) {
-            return const Center(
-              child: Text(
-                'No liked songs yet',
-                style: TextStyle(color: Color(0xFFB3B3B3)),
-              ),
-            );
-          }
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: musicProvider.favoriteSongs.length,
-            itemBuilder: (context, index) {
-              final song = musicProvider.favoriteSongs[index];
-              return MusicCard(
-                title: song.title,
-                subtitle: song.artist,
-                imageUrl: song.albumArt,
-                onTap: () {
-                  musicProvider.playSong(song);
-                  Navigator.pushNamed(context, '/player');
-                },
-                trailing: IconButton(
-                  icon: const Icon(
-                    Icons.favorite,
-                    color: Color(0xFF1DB954),
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                expandedHeight: 240,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: const Text(
+                    'Liked Songs',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () => musicProvider.toggleFavorite(song),
+                  background: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.network(
+                        'https://images.unsplash.com/photo-1496293455970-f8581aae0e3c?q=80&w=500&auto=format&fit=crop',
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              AppTheme.darkBackground.withOpacity(0.8),
+                              AppTheme.darkBackground,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              );
-            },
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${musicProvider.favoriteSongs.length} songs',
+                        style: TextStyle(color: AppTheme.textSecondary),
+                      ),
+                      const Spacer(),
+                      const CircleAvatar(
+                        backgroundColor: AppTheme.primaryColor,
+                        radius: 24,
+                        child: Icon(Icons.play_arrow, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (musicProvider.favoriteSongs.isEmpty)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      'No liked songs yet',
+                      style: TextStyle(color: Color(0xFFB3B3B3)),
+                    ),
+                  ),
+                )
+              else
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final song = musicProvider.favoriteSongs[index];
+                      return ListTile(
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: Image.network(
+                            song.albumArt,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        title: Text(
+                          song.title,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(song.artist),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.favorite, color: AppTheme.primaryColor),
+                          onPressed: () => musicProvider.toggleFavorite(song),
+                        ),
+                        onTap: () {
+                          musicProvider.playSong(song);
+                          Navigator.pushNamed(context, '/player');
+                        },
+                      );
+                    },
+                    childCount: musicProvider.favoriteSongs.length,
+                  ),
+                ),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 100),
+              ),
+            ],
           );
         },
       ),

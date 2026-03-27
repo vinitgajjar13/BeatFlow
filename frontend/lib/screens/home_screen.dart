@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/music_provider.dart';
-import '../widgets/music_card.dart';
+import '../theme/app_theme.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,188 +14,251 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<MusicProvider>(context, listen: false).initializeData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MusicProvider>(context, listen: false).initializeData();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF121212),
-        elevation: 0,
-        title: const Text(
-          'BeatFlow',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: GestureDetector(
-              onTap: () => Navigator.pushNamed(context, '/profile'),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1DB954),
-                  shape: BoxShape.circle,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 80,
+            floating: true,
+            backgroundColor: AppTheme.darkBackground,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Good Morning, User',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    Text(
+                      'Ready to hear some music?',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
-                child: const Icon(Icons.person, color: Colors.white),
-              ),
+                CircleAvatar(
+                  radius: 20,
+                  backgroundImage: const NetworkImage(
+                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop',
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-      body: Consumer<MusicProvider>(
-        builder: (context, musicProvider, _) {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF282828),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search songs, artists...',
-                        hintStyle: const TextStyle(color: Color(0xFF999999)),
-                        border: InputBorder.none,
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Color(0xFFB3B3B3),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                      ),
-                      style: const TextStyle(color: Colors.white),
-                      onTap: () => Navigator.pushNamed(context, '/search'),
-                    ),
+          SliverPadding(
+            padding: const EdgeInsets.all(16.0),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Recent Activity',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    'Recently Played',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                if (musicProvider.allSongs.isNotEmpty)
-                  SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: musicProvider.allSongs.length,
-                      itemBuilder: (context, index) {
-                        final song = musicProvider.allSongs[index];
-                        return GestureDetector(
-                          onTap: () {
-                            musicProvider.playSong(song);
-                            Navigator.pushNamed(context, '/player');
-                          },
-                          child: Container(
-                            width: 160,
-                            margin: const EdgeInsets.only(right: 16),
+                  const SizedBox(height: 16),
+                  Consumer<MusicProvider>(
+                    builder: (context, provider, _) {
+                      final items = provider.allSongs.take(4).toList();
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 2.8,
+                        ),
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final song = items[index];
+                          return Container(
                             decoration: BoxDecoration(
-                              color: const Color(0xFF282828),
-                              borderRadius: BorderRadius.circular(12),
+                              color: AppTheme.surfaceColor,
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                            child: Row(
                               children: [
-                                Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(12),
-                                      topRight: Radius.circular(12),
-                                    ),
-                                    child: Image.network(
-                                      song.albumArt,
-                                      fit: BoxFit.cover,
-                                    ),
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    bottomLeft: Radius.circular(8),
+                                  ),
+                                  child: Image.network(
+                                    song.albumArt,
+                                    width: 56,
+                                    height: 56,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        song.title,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        song.artist,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          color: Color(0xFFB3B3B3),
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    song.title,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      );
+                    },
                   ),
-                const SizedBox(height: 24),
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    'Your Playlists',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                ...musicProvider.playlists
-                    .map(
-                      (playlist) => MusicCard(
-                        title: playlist.name,
-                        subtitle:
-                            '${playlist.songCount} songs • ${playlist.totalDuration.inMinutes} min',
-                        imageUrl: playlist.coverImage,
-                        onTap: () => Navigator.pushNamed(
-                          context,
-                          '/playlist',
-                          arguments: playlist,
-                        ),
-                      ),
-                    )
-                    .toList(),
-                const SizedBox(height: 32),
-              ],
+                ],
+              ),
             ),
-          );
-        },
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(16.0),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Trending Records',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  Consumer<MusicProvider>(
+                    builder: (context, provider, _) {
+                      return SizedBox(
+                        height: 240,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: provider.allSongs.length,
+                          itemBuilder: (context, index) {
+                            final song = provider.allSongs[index];
+                            return GestureDetector(
+                              onTap: () {
+                                provider.playSong(song);
+                                Navigator.pushNamed(context, '/player');
+                              },
+                              child: Container(
+                                width: 160,
+                                margin: const EdgeInsets.only(right: 16),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Image.network(
+                                        song.albumArt,
+                                        width: 160,
+                                        height: 160,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      song.title,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      song.artist,
+                                      style: TextStyle(
+                                        color: AppTheme.textSecondary,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(16.0),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Made For You',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  Consumer<MusicProvider>(
+                    builder: (context, provider, _) {
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemCount: provider.allSongs.length,
+                        itemBuilder: (context, index) {
+                          final song = provider.allSongs[index];
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    image: DecorationImage(
+                                      image: NetworkImage(song.albumArt),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                song.title,
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                song.artist,
+                                style: TextStyle(
+                                  color: AppTheme.textSecondary,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 80), // Space for player/nav
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

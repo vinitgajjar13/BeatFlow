@@ -4,9 +4,14 @@ import 'providers/music_provider.dart';
 import 'providers/player_provider.dart';
 import 'theme/app_theme.dart';
 import 'screens/home_screen.dart';
-import 'screens/discover_screen.dart';
-import 'screens/recently_played_screen.dart';
+import 'screens/search_screen.dart';
+import 'screens/favorites_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/player_screen.dart';
+import 'screens/recently_played_screen.dart';
+import 'screens/artist_detail_screen.dart';
+import 'models/artist_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +31,25 @@ class MyApp extends StatelessWidget {
         title: 'BeatFlow',
         theme: AppTheme.darkTheme,
         debugShowCheckedModeBanner: false,
-        home: const _RootNavigator(),
+        initialRoute: '/onboarding',
+        routes: {
+          '/onboarding': (context) => const OnboardingScreen(),
+          '/home': (context) => const _RootNavigator(),
+          '/player': (context) => const PlayerScreen(),
+          '/search': (context) => const SearchScreen(),
+          '/favorites': (context) => const FavoritesScreen(),
+          '/profile': (context) => const ProfileScreen(),
+          '/recently-played': (context) => const RecentlyPlayedScreen(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == '/artist-detail') {
+            final artist = settings.arguments as Artist;
+            return MaterialPageRoute(
+              builder: (context) => ArtistDetailScreen(artist: artist),
+            );
+          }
+          return null;
+        },
       ),
     );
   }
@@ -42,45 +65,58 @@ class _RootNavigator extends StatefulWidget {
 class _RootNavigatorState extends State<_RootNavigator> {
   int _selectedIndex = 0;
 
+  final List<Widget> _screens = const [
+    HomeScreen(),
+    SearchScreen(),
+    FavoritesScreen(),
+    ProfileScreen(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
-        children: const [
-          HomeScreen(),
-          DiscoverScreen(),
-          RecentlyPlayedScreen(),
-          ProfileScreen(),
-        ],
+        children: _screens,
       ),
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: const Color(0xFF1A1A1A),
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() => _selectedIndex = index);
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.explore_outlined),
-            selectedIcon: Icon(Icons.explore),
-            label: 'Discover',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.history),
-            label: 'Recently Played',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.black,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() => _selectedIndex = index);
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.black.withOpacity(0.9),
+          selectedItemColor: AppTheme.primaryColor,
+          unselectedItemColor: Colors.grey,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search_outlined),
+              activeIcon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_outline),
+              activeIcon: Icon(Icons.favorite),
+              label: 'Library',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              activeIcon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }

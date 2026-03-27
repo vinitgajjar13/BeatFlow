@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/music_provider.dart';
-import '../widgets/music_card.dart';
+import '../theme/app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -11,94 +9,109 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  List<dynamic> _searchResults = [];
-
-  void _search(String query, MusicProvider musicProvider) {
-    if (query.isEmpty) {
-      setState(() => _searchResults = []);
-      return;
-    }
-
-    final results = [
-      ...musicProvider.allSongs.where((song) =>
-          song.title.toLowerCase().contains(query.toLowerCase()) ||
-          song.artist.toLowerCase().contains(query.toLowerCase())),
-      ...musicProvider.artists.where((artist) =>
-          artist.name.toLowerCase().contains(query.toLowerCase())),
-      ...musicProvider.playlists.where((playlist) =>
-          playlist.name.toLowerCase().contains(query.toLowerCase())),
-    ];
-
-    setState(() => _searchResults = results);
-  }
+  final List<Map<String, dynamic>> _categories = [
+    {'name': 'Pop', 'color': Colors.pink, 'image': 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=200&auto=format&fit=crop'},
+    {'name': 'Rock', 'color': Colors.red, 'image': 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?q=80&w=200&auto=format&fit=crop'},
+    {'name': 'Hip-Hop', 'color': Colors.orange, 'image': 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=200&auto=format&fit=crop'},
+    {'name': 'Indie', 'color': Colors.purple, 'image': 'https://images.unsplash.com/photo-1514525253361-bee8d423b715?q=80&w=200&auto=format&fit=crop'},
+    {'name': 'Electronic', 'color': Colors.blue, 'image': 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=200&auto=format&fit=crop'},
+    {'name': 'R&B', 'color': Colors.teal, 'image': 'https://images.unsplash.com/photo-1459749411177-042180ce673c?q=80&w=200&auto=format&fit=crop'},
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF121212),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
-            hintText: 'Search songs, artists...',
-            hintStyle: const TextStyle(color: Color(0xFF999999)),
-            border: InputBorder.none,
-            prefixIcon: const Icon(
-              Icons.search,
-              color: Color(0xFFB3B3B3),
-            ),
-          ),
-          style: const TextStyle(color: Colors.white),
-          onChanged: (value) =>
-              _search(value, Provider.of<MusicProvider>(context, listen: false)),
-        ),
-      ),
-      body: _searchResults.isEmpty
-          ? Center(
-              child: Text(
-                _searchController.text.isEmpty
-                    ? 'Search for songs, artists, or playlists'
-                    : 'No results found',
-                style: const TextStyle(
-                  color: Color(0xFFB3B3B3),
-                  fontSize: 16,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Search',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const TextField(
+                  decoration: InputDecoration(
+                    hintText: 'What do you want to listen to?',
+                    prefixIcon: Icon(Icons.search),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(vertical: 15),
+                  ),
                 ),
               ),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: _searchResults.length,
-              itemBuilder: (context, index) {
-                final result = _searchResults[index];
-                return MusicCard(
-                  title: result.title ?? result.name,
-                  subtitle: result.artist ?? result.genre ?? result.description,
-                  imageUrl: result.albumArt ?? result.profileImage ??
-                      result.coverImage,
-                  onTap: () {
-                    if (result.title != null) {
-                      // It's a song
-                      Provider.of<MusicProvider>(context, listen: false)
-                          .playSong(result);
-                      Navigator.pushNamed(context, '/player');
-                    }
+              const SizedBox(height: 24),
+              Text(
+                'Browse All',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.6,
+                  ),
+                  itemCount: _categories.length,
+                  itemBuilder: (context, index) {
+                    final cat = _categories[index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: cat['color'],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            bottom: -20,
+                            right: -20,
+                            child: Transform.rotate(
+                              angle: 0.5,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  cat['image'],
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              cat['name'],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
-                );
-              },
-            ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 }

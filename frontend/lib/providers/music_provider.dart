@@ -38,28 +38,44 @@ class MusicProvider extends ChangeNotifier {
   void _initializeSampleSongs() {
     _allSongs = [
       Song(
+        title: 'Do I Wanna Know?',
+        artist: 'Arctic Monkeys',
+        albumArt: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=500&auto=format&fit=crop',
+        duration: const Duration(minutes: 4, seconds: 32),
+        albumName: 'AM',
+        releaseDate: DateTime(2013, 9, 9),
+      ),
+      Song(
+        title: 'Neon Pulse',
+        artist: 'The Midnight',
+        albumArt: 'https://images.unsplash.com/photo-1619983081563-430f63602796?q=80&w=500&auto=format&fit=crop',
+        duration: const Duration(minutes: 3, seconds: 55),
+        albumName: 'Endless Summer',
+        releaseDate: DateTime(2016, 8, 5),
+      ),
+      Song(
         title: 'Midnight City',
         artist: 'M83',
-        albumArt: 'https://via.placeholder.com/300',
-        duration: const Duration(minutes: 4, seconds: 10),
+        albumArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=500&auto=format&fit=crop',
+        duration: const Duration(minutes: 4, seconds: 3),
         albumName: 'Hurry Up, We\'re Dreaming',
         releaseDate: DateTime(2011, 10, 18),
       ),
       Song(
         title: 'Electric Feel',
         artist: 'MGMT',
-        albumArt: 'https://via.placeholder.com/300',
+        albumArt: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=500&auto=format&fit=crop',
         duration: const Duration(minutes: 3, seconds: 48),
         albumName: 'Oracular Spectacular',
-        releaseDate: DateTime(2007, 4, 24),
+        releaseDate: DateTime(2007, 10, 2),
       ),
       Song(
-        title: 'Take Me Out',
-        artist: 'Franz Ferdinand',
-        albumArt: 'https://via.placeholder.com/300',
-        duration: const Duration(minutes: 4, seconds: 4),
-        albumName: 'Franz Ferdinand',
-        releaseDate: DateTime(2004, 2, 9),
+        title: 'Starboy',
+        artist: 'The Weeknd',
+        albumArt: 'https://images.unsplash.com/photo-1459749411177-042180ce673c?q=80&w=500&auto=format&fit=crop',
+        duration: const Duration(minutes: 3, seconds: 50),
+        albumName: 'Starboy',
+        releaseDate: DateTime(2016, 11, 25),
       ),
     ];
   }
@@ -67,17 +83,18 @@ class MusicProvider extends ChangeNotifier {
   void _initializeSamplePlaylists() {
     _playlists = [
       Playlist(
-        name: 'Chill Vibes',
-        description: 'Relaxing songs to unwind',
-        coverImage: 'https://via.placeholder.com/300',
+        name: 'Liked Songs',
+        description: 'Your favorite tracks',
+        coverImage: 'https://images.unsplash.com/photo-1496293455970-f8581aae0e3c?q=80&w=500&auto=format&fit=crop',
         createdDate: DateTime.now(),
-        songs: _allSongs.take(2).toList(),
+        songs: _allSongs.toList(),
       ),
       Playlist(
-        name: 'Workout Mix',
-        description: 'High energy tracks',
-        coverImage: 'https://via.placeholder.com/300',
+        name: 'Midnight Cyberpunk',
+        description: 'Retro futuristic vibes',
+        coverImage: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=500&auto=format&fit=crop',
         createdDate: DateTime.now(),
+        songs: [_allSongs[1], _allSongs[2]],
       ),
     ];
   }
@@ -85,16 +102,16 @@ class MusicProvider extends ChangeNotifier {
   void _initializeSampleArtists() {
     _artists = [
       Artist(
-        name: 'The Weeknd',
-        profileImage: 'https://via.placeholder.com/300',
-        genre: 'Hip-Hop/R&B',
-        followers: 85000000,
+        name: 'Arctic Monkeys',
+        profileImage: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d7?q=80&w=500&auto=format&fit=crop',
+        genre: 'Indie Rock',
+        followers: 25000000,
       ),
       Artist(
-        name: 'Billie Eilish',
-        profileImage: 'https://via.placeholder.com/300',
-        genre: 'Alternative',
-        followers: 110000000,
+        name: 'The Weeknd',
+        profileImage: 'https://images.unsplash.com/photo-1514525253361-bee8d423b715?q=80&w=500&auto=format&fit=crop',
+        genre: 'R&B/Pop',
+        followers: 85000000,
       ),
     ];
   }

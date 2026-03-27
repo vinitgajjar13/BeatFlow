@@ -2,26 +2,29 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Colors
-  static const Color primaryColor = Color(0xFF1DB954); // Spotify Green
-  static const Color darkBackground = Color(0xFF121212);
-  static const Color darkCardBackground = Color(0xFF1E1E1E);
-  static const Color surfaceColor = Color(0xFF282828);
+  static const Color primaryColor = Color(0xFF1DB954); // Vibrant Green
+  static const Color secondaryColor = Color(0xFFFFCC33); // Yellow/Orange Accent
+  static const Color darkBackground = Color(0xFF090909); // Near Black
+  static const Color surfaceColor = Color(0xFF1A1A1A); // Dark Grey Surface
+  static const Color cardColor = Color(0xFF242424);
   static const Color textPrimary = Color(0xFFFFFFFF);
   static const Color textSecondary = Color(0xFFB3B3B3);
-  static const Color accentColor = Color(0xFFFFC857);
-  static const Color errorColor = Color(0xFFE53E3E);
-
+  static const Color accentGreen = Color(0xFF1ED760);
+  
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF1DB954), Color(0xFF1ed760)],
+    colors: [Color(0xFF1DB954), Color(0xFF191414)],
   );
 
-  static const LinearGradient darkGradient = LinearGradient(
+  static const LinearGradient glassGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF0F0F0F), Color(0xFF1A1A1A)],
+    colors: [
+      Color(0x33FFFFFF),
+      Color(0x11FFFFFF),
+    ],
   );
 
   // Theme Data
@@ -31,65 +34,73 @@ class AppTheme {
       brightness: Brightness.dark,
       scaffoldBackgroundColor: darkBackground,
       primaryColor: primaryColor,
+      fontFamily: 'Roboto', // Defaulting to Roboto, but UI looks like Inter
       appBarTheme: const AppBarTheme(
-        backgroundColor: darkBackground,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
         titleTextStyle: TextStyle(
           color: textPrimary,
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: Colors.black.withOpacity(0.8),
+        indicatorColor: primaryColor.withOpacity(0.2),
+        labelTextStyle: MaterialStateProperty.all(
+          const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         ),
       ),
       textTheme: const TextTheme(
-        displayLarge: const TextStyle(
+        displayLarge: TextStyle(
           color: textPrimary,
           fontSize: 32,
           fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
         ),
-        displayMedium: const TextStyle(
+        displayMedium: TextStyle(
           color: textPrimary,
           fontSize: 28,
           fontWeight: FontWeight.bold,
         ),
-        headlineLarge: const TextStyle(
+        headlineLarge: TextStyle(
           color: textPrimary,
           fontSize: 24,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.bold,
         ),
-        headlineMedium: const TextStyle(
+        headlineMedium: TextStyle(
           color: textPrimary,
           fontSize: 20,
           fontWeight: FontWeight.w600,
         ),
-        titleLarge: const TextStyle(
+        titleLarge: TextStyle(
           color: textPrimary,
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
-        titleMedium: const TextStyle(
+        bodyLarge: TextStyle(
           color: textPrimary,
           fontSize: 16,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w400,
         ),
-        bodyLarge: const TextStyle(
-          color: textPrimary,
-          fontSize: 16,
-        ),
-        bodyMedium: const TextStyle(
+        bodyMedium: TextStyle(
           color: textSecondary,
           fontSize: 14,
+          fontWeight: FontWeight.w400,
         ),
-        labelSmall: const TextStyle(
+        labelSmall: TextStyle(
           color: textSecondary,
-          fontSize: 12,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.5,
         ),
       ),
       colorScheme: const ColorScheme.dark(
         primary: primaryColor,
-        secondary: accentColor,
-        error: errorColor,
+        secondary: secondaryColor,
         surface: surfaceColor,
+        onSurface: textPrimary,
       ),
     );
   }
