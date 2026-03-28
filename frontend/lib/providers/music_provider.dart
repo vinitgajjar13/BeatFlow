@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/song_model.dart';
 import '../models/playlist_model.dart';
 import '../models/artist_model.dart';
+import '../models/album_model.dart';
 
 class MusicProvider extends ChangeNotifier {
   // Mock data - replace with API calls
@@ -9,6 +10,7 @@ class MusicProvider extends ChangeNotifier {
   List<Song> _favoriteSongs = [];
   List<Playlist> _playlists = [];
   List<Artist> _artists = [];
+  List<Album> _albums = [];
   Song? _currentSong;
   List<Song> _queue = [];
   int _currentIndex = 0;
@@ -23,6 +25,7 @@ class MusicProvider extends ChangeNotifier {
   List<Song> get favoriteSongs => _favoriteSongs;
   List<Playlist> get playlists => _playlists;
   List<Artist> get artists => _artists;
+  List<Album> get albums => _albums;
   Song? get currentSong => _currentSong;
   List<Song> get queue => _queue;
   int get currentIndex => _currentIndex;
@@ -33,6 +36,7 @@ class MusicProvider extends ChangeNotifier {
     _initializeSampleSongs();
     _initializeSamplePlaylists();
     _initializeSampleArtists();
+    _initializeSampleAlbums();
   }
 
   void _initializeSampleSongs() {
@@ -112,6 +116,25 @@ class MusicProvider extends ChangeNotifier {
         profileImage: 'https://images.unsplash.com/photo-1514525253361-bee8d423b715?q=80&w=500&auto=format&fit=crop',
         genre: 'R&B/Pop',
         followers: 85000000,
+      ),
+    ];
+  }
+
+  void _initializeSampleAlbums() {
+    _albums = [
+      Album(
+        name: 'AM',
+        artist: 'Arctic Monkeys',
+        coverArt: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=500&auto=format&fit=crop',
+        releaseDate: DateTime(2013, 9, 9),
+        songs: [_allSongs[0]],
+      ),
+      Album(
+        name: 'Starboy',
+        artist: 'The Weeknd',
+        coverArt: 'https://images.unsplash.com/photo-1459749411177-042180ce673c?q=80&w=500&auto=format&fit=crop',
+        releaseDate: DateTime(2016, 11, 25),
+        songs: [_allSongs[4]],
       ),
     ];
   }
