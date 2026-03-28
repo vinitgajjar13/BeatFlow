@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -156,3 +156,4 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 }
+

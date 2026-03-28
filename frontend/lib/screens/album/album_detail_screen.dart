@@ -2,9 +2,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../models/album_model.dart';
-import '../providers/music_provider.dart';
-import '../theme/app_theme.dart';
+import '../../models/album_model.dart';
+import '../../providers/music_provider.dart';
+import '../../core/theme/app_theme.dart';
 
 class AlbumDetailScreen extends StatelessWidget {
   final Album album;
@@ -195,3 +195,4 @@ class AlbumDetailScreen extends StatelessWidget {
     );
   }
 }
+

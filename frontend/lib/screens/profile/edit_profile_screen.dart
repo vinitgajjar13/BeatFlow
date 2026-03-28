@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -139,3 +139,4 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 }
+

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/music_provider.dart';
-import '../widgets/music_card.dart';
+import '../../providers/music_provider.dart';
+import '../../widgets/music_card.dart';
 
 class RecentlyPlayedScreen extends StatelessWidget {
   const RecentlyPlayedScreen({Key? key}) : super(key: key);
@@ -42,3 +42,4 @@ class RecentlyPlayedScreen extends StatelessWidget {
     );
   }
 }
+

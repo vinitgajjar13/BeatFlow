@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/music_provider.dart';
-import '../models/playlist_model.dart';
-import '../widgets/music_card.dart';
+import '../../providers/music_provider.dart';
+import '../../models/playlist_model.dart';
+import '../../widgets/music_card.dart';
 
 class MyPlaylistsScreen extends StatelessWidget {
   const MyPlaylistsScreen({Key? key}) : super(key: key);
@@ -160,3 +160,4 @@ class _CreatePlaylistDialogState extends State<CreatePlaylistDialog> {
     super.dispose();
   }
 }
+

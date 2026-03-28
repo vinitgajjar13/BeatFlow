@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/music_provider.dart';
-import '../theme/app_theme.dart';
+import '../../providers/music_provider.dart';
+import '../../core/theme/app_theme.dart';
 
 class CategoryDetailScreen extends StatelessWidget {
   final String categoryName;
@@ -125,4 +125,5 @@ class CategoryDetailScreen extends StatelessWidget {
     }
   }
 }
+
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -11,6 +11,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  double _pageOffset = 0;
 
   final List<Map<String, dynamic>> _pages = [
     {
@@ -37,6 +38,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(_handlePageScroll);
+  }
+
+  void _handlePageScroll() {
+    if (!_pageController.hasClients) return;
+    final nextOffset = _pageController.page ?? _currentPage.toDouble();
+    if ((nextOffset - _pageOffset).abs() > 0.001) {
+      setState(() {
+        _pageOffset = nextOffset;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _pageController.removeListener(_handlePageScroll);
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.sizeOf(context).height;
     final double screenWidth = MediaQuery.sizeOf(context).width;
@@ -55,12 +79,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
             itemBuilder: (context, index) {
               final page = _pages[index];
+              final pageDelta = index - _pageOffset;
+              final distance = pageDelta.abs().clamp(0.0, 1.0);
+              final contentOpacity = (1 - (distance * 0.5)).clamp(0.0, 1.0);
+              final titleOffsetY = 20 * distance;
+              final subtitleOffsetY = 30 * distance;
+              final imageOffsetX = pageDelta * 36;
+              final imageScale = 1.08 - (distance * 0.06);
+
               return Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
-                    page['image'],
-                    fit: BoxFit.cover,
+                  Transform.translate(
+                    offset: Offset(imageOffsetX, 0),
+                    child: Transform.scale(
+                      scale: imageScale,
+                      child: Image.network(
+                        page['image'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -86,22 +124,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          page['title'],
-                          style: TextStyle(
-                            color: page['titleColor'],
-                            fontSize: isSmallScreen ? 36 : 48,
-                            fontWeight: FontWeight.bold,
-                            height: 1.1,
+                        Opacity(
+                          opacity: contentOpacity,
+                          child: Transform.translate(
+                            offset: Offset(0, titleOffsetY),
+                            child: Text(
+                              page['title'],
+                              style: TextStyle(
+                                color: page['titleColor'],
+                                fontSize: isSmallScreen ? 36 : 48,
+                                fontWeight: FontWeight.bold,
+                                height: 1.1,
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(height: screenHeight * 0.02),
-                        Text(
-                          page['subtitle'],
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: isSmallScreen ? 14 : 16,
-                            fontWeight: FontWeight.w400,
+                        Opacity(
+                          opacity: contentOpacity,
+                          child: Transform.translate(
+                            offset: Offset(0, subtitleOffsetY),
+                            child: Text(
+                              page['subtitle'],
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: isSmallScreen ? 14 : 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(height: screenHeight * 0.12),
@@ -113,28 +163,70 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
           Positioned(
+            bottom: isSmallScreen ? 98 : 132,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(_pages.length, (index) {
+                final distance = (index - _pageOffset).abs().clamp(0.0, 1.0);
+                final activeFactor = 1 - distance;
+                final width = 10 + (activeFactor * 16);
+                final alpha = 0.35 + (activeFactor * 0.65);
+
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: width,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: alpha),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                );
+              }),
+            ),
+          ),
+          Positioned(
             bottom: isSmallScreen ? 30 : 60,
             left: screenWidth * 0.06,
             right: screenWidth * 0.06,
-            child: _currentPage == 2
-                ? Row(
-                    children: [
-                      Expanded(
-                        child: _buildNextButton(isBlack: true, height: isSmallScreen ? 48 : 56),
-                      ),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      Expanded(
-                        child: _buildSkipButton(height: isSmallScreen ? 48 : 56),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _buildNextButton(isBlack: false, height: isSmallScreen ? 48 : 56),
-                      ),
-                    ],
-                  ),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 350),
+              switchInCurve: Curves.easeOutCubic,
+              switchOutCurve: Curves.easeInCubic,
+              transitionBuilder: (child, animation) {
+                final slide = Tween<Offset>(
+                  begin: const Offset(0, 0.12),
+                  end: Offset.zero,
+                ).animate(animation);
+
+                return FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(position: slide, child: child),
+                );
+              },
+              child: _currentPage == 2
+                  ? Row(
+                      key: const ValueKey('final-cta'),
+                      children: [
+                        Expanded(
+                          child: _buildNextButton(isBlack: true, height: isSmallScreen ? 48 : 56),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      key: const ValueKey('default-cta'),
+                      children: [
+                        Expanded(
+                          child: _buildSkipButton(height: isSmallScreen ? 48 : 56),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _buildNextButton(isBlack: false, height: isSmallScreen ? 48 : 56),
+                        ),
+                      ],
+                    ),
+            ),
           ),
         ],
       ),
@@ -216,4 +308,5 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 }
+
 

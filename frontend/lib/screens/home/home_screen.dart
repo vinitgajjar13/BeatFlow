@@ -3,9 +3,9 @@ import 'package:shimmer/shimmer.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../providers/music_provider.dart';
-import '../theme/app_theme.dart';
-import '../models/album_model.dart';
+import '../../providers/music_provider.dart';
+import '../../core/theme/app_theme.dart';
+import '../../models/album_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -317,3 +317,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

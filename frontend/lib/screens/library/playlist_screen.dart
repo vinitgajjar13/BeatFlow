@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/music_provider.dart';
-import '../widgets/music_card.dart';
+import '../../providers/music_provider.dart';
+import '../../widgets/music_card.dart';
 
 class PlaylistScreen extends StatelessWidget {
   final dynamic playlist;
@@ -111,3 +111,4 @@ class PlaylistScreen extends StatelessWidget {
     );
   }
 }
+

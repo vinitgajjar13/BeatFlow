@@ -105,7 +105,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: lightBackground,
+      scaffoldBackgroundColor: const Color.fromARGB(0, 0, 0, 0),
       primaryColor: primaryColor,
       fontFamily: GoogleFonts.outfit().fontFamily,
       textTheme: GoogleFonts.outfitTextTheme(ThemeData.light().textTheme).copyWith(

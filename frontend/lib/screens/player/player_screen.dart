@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../providers/music_provider.dart';
-import '../providers/player_provider.dart';
+import '../../providers/music_provider.dart';
+import '../../providers/player_provider.dart';
 
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({Key? key}) : super(key: key);
@@ -245,3 +245,4 @@ class _PlayerScreenState extends State<PlayerScreen> {
     );
   }
 }
+

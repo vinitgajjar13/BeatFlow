@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({Key? key}) : super(key: key);
@@ -83,4 +83,5 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 }
+
 
