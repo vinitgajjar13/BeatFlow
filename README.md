@@ -1,48 +1,42 @@
 # BeatFlow - Music Streaming App
 
-A modern, beautiful music streaming Flutter application designed with the latest Material Design 3 principles.
+A modern, high-fidelity music streaming Flutter application designed with **Material Design 3** principles and a stunning **Glassmorphic UI**.
 
 ## Features
 
-- **Home Dashboard** - Browse recently played songs and your playlists
-- **Music Player** - Full-featured player with play controls, progress tracking, and favorite toggling
-- **Playlists** - Create, manage, and play custom playlists
-- **Search** - Search songs, artists, and playlists
-- **Discover** - Explore featured artists and new releases
-- **Recently Played** - View your listening history
-- **Liked Songs** - Collections of your favorite tracks
-- **User Profile** - Manage your profile and preferences
+- **Glassmorphic UI** - Beautiful, translucent design elements with ambient background effects.
+- **Home Dashboard** - Browse recently played songs and featured content.
+- **Modern Onboarding** - Elegant introduction flow with vibrant visuals.
+- **Music Player** - Full-featured player with advanced controls and favorites.
+- **Library Management** - Manage playlists, liked songs, and listening history.
+- **Discover & Search** - Explore new releases and search for your favorite artists.
+- **User Profiles** - Customizable profiles and settings.
+- **Performance Optimized** - Smooth transitions and efficient caching.
 
 ## Project Structure
 
+The project is organized following a feature-based architecture within the `frontend` directory:
+
 ```
-lib/
-├── main.dart                 # App entry point and routing
-├── screens/                  # All screen implementations
-│   ├── home_screen.dart
-│   ├── player_screen.dart
-│   ├── playlist_screen.dart
-│   ├── search_screen.dart
-│   ├── favorites_screen.dart
-│   ├── profile_screen.dart
-│   ├── discover_screen.dart
-│   ├── recently_played_screen.dart
-│   └── my_playlists_screen.dart
-├── widgets/                  # Reusable widgets
-│   ├── music_card.dart
-│   ├── album_grid.dart
-│   └── play_button.dart
-├── models/                   # Data models
-│   ├── song_model.dart
-│   ├── playlist_model.dart
-│   └── artist_model.dart
-├── providers/                # State management
-│   ├── music_provider.dart
-│   └── player_provider.dart
-├── services/                 # API and services
-├── theme/                    # Theme and styling
-│   └── app_theme.dart
-└── utils/                    # Utility functions
+frontend/lib/
+├── core/                     # Core utilities, theme, and constants
+│   ├── theme/                # AppTheme definition (Outfit font + 3-color palette)
+│   └── utils/                # General purpose helpers
+├── main.dart                 # App entry point
+├── models/                   # Data models (Song, Artist, Playlist)
+├── providers/                # State management (MusicProvider, PlayerProvider)
+├── screens/                  # Feature-based screen organization
+│   ├── album/                # Album details
+│   ├── artist/               # Artist bios and top tracks
+│   ├── auth/                 # Onboarding and Splash screens
+│   ├── discover/             # Discover and Categories
+│   ├── home/                 # Main dashboard
+│   ├── library/              # Favorites, My Playlists, Recently Played
+│   ├── player/               # Full-screen music player
+│   ├── profile/              # Profile, Settings, Notifications
+│   └── search/               # Global search
+├── widgets/                  # Reusable UI components
+└── services/                 # External API and local storage services
 ```
 
 ## Getting Started
@@ -57,124 +51,73 @@ lib/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/beatflow.git
-cd beatflow
+git clone https://github.com/vinitgajjar13/music_app.git
+cd music_app
 ```
 
-2. Install dependencies:
+2. Navigate to the frontend directory:
+```bash
+cd frontend
+```
+
+3. Install dependencies:
 ```bash
 flutter pub get
 ```
 
-3. Run the app:
+4. Run the app:
 ```bash
 flutter run
 ```
 
+## UI & Design System
+
+BeatFlow uses a premium design language characterized by vibrant colors and glassmorphic elements.
+
+### Color Scheme
+
+- **Primary Green**: `#1DB954` (Core brand color)
+- **Secondary Orange**: `#FF7A00` (Modern vibrancy)
+- **Accent Cyan**: `#00C2FF` (Interactive elements)
+- **Glassy Effect**: 20% white/black opacity with subtle borders (`0x33FFFFFF`)
+
+### Typography
+
+- **Font Family**: [Outfit](https://fonts.google.com/specimen/Outfit)
+- **Display**: ExtraBold/Black for striking headings
+- **Body**: Regular/Medium for readability
+- **Character**: Material 3 letter spacing and line heights
+
 ## Dependencies
 
-- **Provider** - State management
-- **GetX** - Alternative state management and navigation
-- **GoRouter** - Advanced routing
-- **Just Audio** - Audio playback
-- **Audio Service** - Background audio
-- **Hive** - Local storage
-- **Cached Network Image** - Image caching
-
-## Color Scheme
-
-- **Primary Green**: #1DB954 (Spotify inspired)
-- **Dark Background**: #121212
-- **Card Background**: #1E1E1E & #282828
-- **Text Primary**: #FFFFFF
-- **Text Secondary**: #B3B3B3
-- **Accent Yellow**: #FFC857
-
-## Typography
-
-- **Font Family**: Poppins
-- **Display Large**: 32px Bold
-- **Heading Large**: 24px SemiBold
-- **Body Large**: 16px Regular
-- **Caption**: 12px Regular
+- **flutter_animate** - For high-performance micro-animations
+- **just_audio & audio_service** - Pro-level audio playback
+- **get** & **go_router** - Navigation and state management
+- **cached_network_image** - Efficient asset loading
+- **hive** - Lightweight local storage
 
 ## Architecture
 
-The app follows a multi-layer architecture:
+BeatFlow follows a modern, scalable architecture:
 
-1. **UI Layer** (Screens & Widgets)
-   - Material Design 3 components
-   - Responsive layouts
-   - Beautiful animations
-
-2. **State Management Layer** (Providers)
-   - Music Provider - Manages songs, playlists, and playback
-   - Player Provider - Manages player state
-
-3. **Business Logic Layer** (Models & Services)
-   - Song, Playlist, Artist models
-   - Future: API services for backend integration
-
-4. **Data Layer**
-   - Local storage with Hive
-   - Future: Remote API integration
+1.  **UI Layer**: Material 3 components with custom glassmorphic styling.
+2.  **State Management**: Logic-separated providers for player and content states.
+3.  **Data Layer**: Services for local caching and future API integration.
 
 ## Development Guidelines
 
-- Follow Flutter best practices
-- Use meaningful variable and function names
-- Keep widgets pure and reusable
-- Implement proper error handling
-- Test on both Android and iOS
-- Follow Material Design 3 guidelines
+- Use `AppTheme` constants for all styling.
+- Keep components reusable and localized.
+- Test on physical devices for performance validation (especially glass effects).
 
 ## Building for Release
 
 ### Android
 ```bash
+cd frontend
 flutter build apk --release
-# or
-flutter build appbundle --release
 ```
 
-### iOS
-```bash
-flutter build ios --release
-```
 
-## Testing
+Built with Flutter and ❤️ by the BeatFlow Team
 
-```bash
-flutter test
-```
-
-## Contributing
-
-1. Create a feature branch
-2. Make your changes
-3. Commit with clear messages
-4. Push to your branch
-5. Create a Pull Request
-
-## Future Enhancements
-
-- [ ] Backend API integration
-- [ ] User authentication
-- [ ] Social features (sharing, collaborative playlists)
-- [ ] Advanced search filters
-- [ ] Recommendations engine
-- [ ] Offline mode
-- [ ] Multiple language support
-- [ ] Dark/Light theme toggle
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-
-For support or questions, please open an issue or contact the development team.
-
----
-
-Built with Flutter and ❤️
