@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../providers/music_provider.dart';
@@ -25,8 +26,14 @@ class FavoritesScreen extends StatelessWidget {
                   titlePadding: const EdgeInsets.only(left: 24, bottom: 24),
                   title: const Text(
                     'Liked Songs',
-                    style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, fontSize: 28),
-                  ).animate().fadeIn(duration: 500.ms).slideX(begin: -0.2, end: 0),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                        fontSize: 28),
+                  )
+                      .animate()
+                      .fadeIn(duration: 500.ms)
+                      .slideX(begin: -0.2, end: 0),
                   background: Stack(
                     fit: StackFit.expand,
                     children: [
@@ -67,29 +74,46 @@ class FavoritesScreen extends StatelessWidget {
                       ).animate().fadeIn(delay: 200.ms),
                       const Spacer(),
                       // Glassy Play Button
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor.withValues(alpha: 0.8),
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppTheme.primaryColor.withValues(alpha: 0.4),
-                                  blurRadius: 15,
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          if (musicProvider.favoriteSongs.isNotEmpty) {
+                            musicProvider
+                                .playSong(musicProvider.favoriteSongs[0]);
+                          }
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: AppTheme.primaryColor
+                                    .withValues(alpha: 0.8),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: Colors.white.withValues(alpha: 0.3)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppTheme.primaryColor
+                                        .withValues(alpha: 0.4),
+                                    blurRadius: 15,
+                                    offset: const Offset(0, 5),
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(Icons.play_arrow_rounded,
+                                  color: Colors.white, size: 36),
                             ),
-                            child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 36),
                           ),
                         ),
-                      ).animate().scale(delay: 300.ms, begin: const Offset(0, 0), end: const Offset(1, 1), curve: Curves.easeOutBack),
+                      ).animate().scale(
+                          delay: 300.ms,
+                          begin: const Offset(0, 0),
+                          end: const Offset(1, 1),
+                          curve: Curves.easeOutBack),
                     ],
                   ),
                 ),
@@ -100,7 +124,10 @@ class FavoritesScreen extends StatelessWidget {
                     child: Text(
                       'No liked songs yet',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.5),
+                            color: Theme.of(context)
+                                .iconTheme
+                                .color
+                                ?.withValues(alpha: 0.5),
                           ),
                     ).animate().fadeIn(),
                   ),
@@ -122,10 +149,12 @@ class FavoritesScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).cardTheme.color,
                                   borderRadius: AppTheme.geometry,
-                                  border: Border.all(color: Theme.of(context).dividerColor),
+                                  border: Border.all(
+                                      color: Theme.of(context).dividerColor),
                                 ),
                                 child: ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
                                   leading: ClipRRect(
                                     borderRadius: AppTheme.geometry / 2,
                                     child: Image.network(
@@ -137,19 +166,28 @@ class FavoritesScreen extends StatelessWidget {
                                   ),
                                   title: Text(
                                     song.title,
-                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
                                           fontWeight: FontWeight.bold,
                                         ),
                                   ),
                                   subtitle: Text(
                                     song.artist,
-                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                   ),
                                   trailing: IconButton(
-                                    icon: const Icon(Icons.favorite_rounded, color: AppTheme.primaryColor),
-                                    onPressed: () => musicProvider.toggleFavorite(song),
+                                    icon: const Icon(Icons.favorite_rounded,
+                                        color: AppTheme.primaryColor),
+                                    onPressed: () {
+                                      HapticFeedback.mediumImpact();
+                                      musicProvider.toggleFavorite(song);
+                                    },
                                   ),
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     musicProvider.playSong(song);
                                     Navigator.pushNamed(context, '/player');
                                   },
@@ -157,14 +195,19 @@ class FavoritesScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ).animate().fadeIn(duration: 400.ms, delay: (100 + (index * 50)).ms).slideX(begin: 0.1, end: 0);
+                        )
+                            .animate()
+                            .fadeIn(
+                                duration: 400.ms,
+                                delay: (100 + (index * 50)).ms)
+                            .slideX(begin: 0.1, end: 0);
                       },
                       childCount: musicProvider.favoriteSongs.length,
                     ),
                   ),
                 ),
               const SliverToBoxAdapter(
-                child: SizedBox(height: 120),
+                child: SizedBox(height: 160),
               ),
             ],
           );
@@ -173,4 +216,3 @@ class FavoritesScreen extends StatelessWidget {
     );
   }
 }
-

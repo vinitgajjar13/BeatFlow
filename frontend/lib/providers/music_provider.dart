@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../models/song_model.dart';
 import '../models/playlist_model.dart';
@@ -15,7 +16,9 @@ class MusicProvider extends ChangeNotifier {
   List<Song> _queue = [];
   int _currentIndex = 0;
   bool _isPlaying = false;
-  
+  Duration _currentPosition = Duration.zero;
+  Timer? _simulationTimer;
+
   MusicProvider() {
     initializeData();
   }
@@ -30,6 +33,7 @@ class MusicProvider extends ChangeNotifier {
   List<Song> get queue => _queue;
   int get currentIndex => _currentIndex;
   bool get isPlaying => _isPlaying;
+  Duration get currentPosition => _currentPosition;
 
   // Initialize with sample data
   void initializeData() {
@@ -89,7 +93,7 @@ class MusicProvider extends ChangeNotifier {
       Playlist(
         name: 'Liked Songs',
         description: 'Your favorite tracks',
-        coverImage: 'https://images.unsplash.com/photo-1496293455970-f8581aae0e3c?q=80&w=500&auto=format&fit=crop',
+        coverImage: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=500&auto=format&fit=crop',
         createdDate: DateTime.now(),
         songs: _allSongs.toList(),
       ),
@@ -107,13 +111,13 @@ class MusicProvider extends ChangeNotifier {
     _artists = [
       Artist(
         name: 'Arctic Monkeys',
-        profileImage: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d7?q=80&w=500&auto=format&fit=crop',
+        profileImage: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=500&auto=format&fit=crop',
         genre: 'Indie Rock',
         followers: 25000000,
       ),
       Artist(
         name: 'The Weeknd',
-        profileImage: 'https://images.unsplash.com/photo-1514525253361-bee8d423b715?q=80&w=500&auto=format&fit=crop',
+        profileImage: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=500&auto=format&fit=crop',
         genre: 'R&B/Pop',
         followers: 85000000,
       ),
@@ -140,15 +144,41 @@ class MusicProvider extends ChangeNotifier {
   }
 
   // Music control methods
-  void playSong(Song song) {
-    _currentSong = song;
-    _isPlaying = true;
-    _queue = [song];
+  void togglePlayPause() {
+    _isPlaying = !_isPlaying;
+    if (_isPlaying) {
+      _startSimulation();
+    } else {
+      _stopSimulation();
+    }
     notifyListeners();
   }
 
-  void togglePlayPause() {
-    _isPlaying = !_isPlaying;
+  void _startSimulation() {
+    _simulationTimer?.cancel();
+    _simulationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_currentSong != null) {
+        if (_currentPosition < _currentSong!.duration) {
+          _currentPosition += const Duration(seconds: 1);
+          notifyListeners();
+        } else {
+          nextSong();
+        }
+      }
+    });
+  }
+
+  void _stopSimulation() {
+    _simulationTimer?.cancel();
+    _simulationTimer = null;
+  }
+
+  void playSong(Song song) {
+    _currentSong = song;
+    _currentPosition = Duration.zero;
+    _isPlaying = true;
+    _queue = [song];
+    _startSimulation();
     notifyListeners();
   }
 
@@ -156,6 +186,7 @@ class MusicProvider extends ChangeNotifier {
     if (_currentIndex < _queue.length - 1) {
       _currentIndex++;
       _currentSong = _queue[_currentIndex];
+      _currentPosition = Duration.zero;
       notifyListeners();
     }
   }
@@ -164,6 +195,7 @@ class MusicProvider extends ChangeNotifier {
     if (_currentIndex > 0) {
       _currentIndex--;
       _currentSong = _queue[_currentIndex];
+      _currentPosition = Duration.zero;
       notifyListeners();
     }
   }

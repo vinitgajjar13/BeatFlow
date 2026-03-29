@@ -17,7 +17,8 @@ class ArtistDetailScreen extends StatelessWidget {
     final double expandedHeight = (screenHeight * 0.4).clamp(300, 500);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Solid bg since this pushes full screen
+      backgroundColor: Theme.of(context)
+          .scaffoldBackgroundColor, // Solid bg since this pushes full screen
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
@@ -59,11 +60,17 @@ class ArtistDetailScreen extends StatelessWidget {
                       children: [
                         Text(
                           artist.name,
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayLarge
+                              ?.copyWith(
                                 color: Colors.white,
                                 fontSize: 44,
                               ),
-                        ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
+                        )
+                            .animate()
+                            .fadeIn(duration: 600.ms)
+                            .slideY(begin: 0.2, end: 0),
                         const SizedBox(height: 8),
                         Text(
                           '${(artist.followers / 1000000).toStringAsFixed(1)}M MONTHLY LISTENERS',
@@ -73,7 +80,10 @@ class ArtistDetailScreen extends StatelessWidget {
                             letterSpacing: 2.0,
                             color: Colors.white70,
                           ),
-                        ).animate().fadeIn(duration: 600.ms, delay: 100.ms).slideY(begin: 0.2, end: 0),
+                        )
+                            .animate()
+                            .fadeIn(duration: 600.ms, delay: 100.ms)
+                            .slideY(begin: 0.2, end: 0),
                       ],
                     ),
                   ),
@@ -93,15 +103,22 @@ class ArtistDetailScreen extends StatelessWidget {
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(color: Colors.white.withValues(alpha: 0.5)),
+                        side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.5)),
                       ),
                       elevation: 0,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 12),
                     ),
-                    child: const Text('FOLLOW', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                    child: const Text('FOLLOW',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                   ).animate().fadeIn(delay: 200.ms),
                   const SizedBox(width: 24),
-                  Icon(Icons.more_horiz_rounded, color: Theme.of(context).iconTheme.color, size: 32).animate().scale(delay: 300.ms),
+                  Icon(Icons.more_horiz_rounded,
+                          color: Theme.of(context).iconTheme.color, size: 32)
+                      .animate()
+                      .scale(delay: 300.ms),
                   const Spacer(),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(36),
@@ -113,19 +130,26 @@ class ArtistDetailScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppTheme.primaryColor.withValues(alpha: 0.8),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+                          border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.3)),
                           boxShadow: [
                             BoxShadow(
-                              color: AppTheme.primaryColor.withValues(alpha: 0.4),
+                              color:
+                                  AppTheme.primaryColor.withValues(alpha: 0.4),
                               blurRadius: 15,
                               offset: const Offset(0, 5),
                             ),
                           ],
                         ),
-                        child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 40),
+                        child: const Icon(Icons.play_arrow_rounded,
+                            color: Colors.white, size: 40),
                       ),
                     ),
-                  ).animate().scale(delay: 400.ms, begin: const Offset(0, 0), end: const Offset(1, 1), curve: Curves.easeOutBack),
+                  ).animate().scale(
+                      delay: 400.ms,
+                      begin: const Offset(0, 0),
+                      end: const Offset(1, 1),
+                      curve: Curves.easeOutBack),
                 ],
               ),
             ),
@@ -150,7 +174,8 @@ class ArtistDetailScreen extends StatelessWidget {
                   .where((s) => s.artist == artist.name)
                   .toList();
               return SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -165,10 +190,12 @@ class ArtistDetailScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: Theme.of(context).cardTheme.color,
                                 borderRadius: AppTheme.geometry,
-                                border: Border.all(color: Theme.of(context).dividerColor),
+                                border: Border.all(
+                                    color: Theme.of(context).dividerColor),
                               ),
                               child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
                                 leading: SizedBox(
                                   width: 32,
                                   child: Center(
@@ -177,18 +204,26 @@ class ArtistDetailScreen extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.5),
+                                        color: Theme.of(context)
+                                            .iconTheme
+                                            .color
+                                            ?.withValues(alpha: 0.5),
                                       ),
                                     ),
                                   ),
                                 ),
                                 title: Text(
                                   song.title,
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
                                 ),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.more_vert_rounded),
-                                  color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.5),
+                                  color: Theme.of(context)
+                                      .iconTheme
+                                      .color
+                                      ?.withValues(alpha: 0.5),
                                   onPressed: () {},
                                 ),
                                 onTap: () {
@@ -199,7 +234,11 @@ class ArtistDetailScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ).animate().fadeIn(duration: 400.ms, delay: (200 + (index * 50)).ms).slideX(begin: 0.1, end: 0);
+                      )
+                          .animate()
+                          .fadeIn(
+                              duration: 400.ms, delay: (200 + (index * 50)).ms)
+                          .slideX(begin: 0.1, end: 0);
                     },
                     childCount: artistSongs.length,
                   ),
@@ -241,4 +280,3 @@ class ArtistDetailScreen extends StatelessWidget {
     );
   }
 }
-

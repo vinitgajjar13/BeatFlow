@@ -17,7 +17,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, dynamic>> _pages = [
     {
       'title': 'Music, made\nfor you.',
-      'subtitle': 'Discover songs, artists, and playlists tailored to your vibe',
+      'subtitle':
+          'Discover songs, artists, and playlists tailored to your vibe',
       'image': TImage.onboarding1,
       'titleColor': AppTheme.onboardingOrange,
       'isWhiteNext': true,
@@ -211,7 +212,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       key: const ValueKey('final-cta'),
                       children: [
                         Expanded(
-                          child: _buildNextButton(isBlack: true, height: isSmallScreen ? 48 : 56),
+                          child: _buildNextButton(
+                              isBlack: true, height: isSmallScreen ? 48 : 56),
                         ),
                       ],
                     )
@@ -219,11 +221,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       key: const ValueKey('default-cta'),
                       children: [
                         Expanded(
-                          child: _buildSkipButton(height: isSmallScreen ? 48 : 56),
+                          child:
+                              _buildSkipButton(height: isSmallScreen ? 48 : 56),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
-                          child: _buildNextButton(isBlack: false, height: isSmallScreen ? 48 : 56),
+                          child: _buildNextButton(
+                              isBlack: false, height: isSmallScreen ? 48 : 56),
                         ),
                       ],
                     ),
@@ -240,7 +244,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(AppTheme.borderRadius),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1.5),
+        border:
+            Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1.5),
       ),
       child: Material(
         color: Colors.transparent,
@@ -309,5 +314,3 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 }
-
-

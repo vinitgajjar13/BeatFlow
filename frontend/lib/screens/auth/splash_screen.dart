@@ -102,15 +102,14 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Text(
                 'v1.0.0',
                 style: TextStyle(
-                  color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.3),
+                  color: (isDark ? Colors.white : Colors.black)
+                      .withValues(alpha: 0.3),
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 2,
                 ),
               ),
-            )
-                .animate()
-                .fadeIn(delay: 1.seconds, duration: 800.ms),
+            ).animate().fadeIn(delay: 1.seconds, duration: 800.ms),
           ),
         ],
       ),

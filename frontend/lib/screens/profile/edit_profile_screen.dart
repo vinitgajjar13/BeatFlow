@@ -18,7 +18,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: 'User Name');
-    _bioController = TextEditingController(text: 'Music enthusiast and aspiring DJ.');
+    _bioController =
+        TextEditingController(text: 'Music enthusiast and aspiring DJ.');
     _emailController = TextEditingController(text: 'user@example.com');
   }
 
@@ -40,14 +41,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         actions: [
           TextButton(
             onPressed: () {
-               if (_formKey.currentState!.validate()) {
+              if (_formKey.currentState!.validate()) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Profile updated successfully!')),
+                  const SnackBar(
+                      content: Text('Profile updated successfully!')),
                 );
                 Navigator.pop(context);
               }
             },
-            child: const Text('Save', style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.bold)),
+            child: const Text('Save',
+                style: TextStyle(
+                    color: AppTheme.primaryColor, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -60,7 +64,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               Stack(
                 children: [
-                   const CircleAvatar(
+                  const CircleAvatar(
                     radius: 60,
                     backgroundImage: NetworkImage(
                       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop',
@@ -75,7 +79,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       padding: const EdgeInsets.all(8),
-                      child: const Icon(Icons.camera_alt_rounded, color: Colors.white, size: 20),
+                      child: const Icon(Icons.camera_alt_rounded,
+                          color: Colors.white, size: 20),
                     ),
                   ),
                 ],
@@ -83,11 +88,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(height: 32),
               _buildTextField(context, 'Display Name', _nameController),
               const SizedBox(height: 24),
-              _buildTextField(context, 'Email', _emailController, keyboardType: TextInputType.emailAddress),
+              _buildTextField(context, 'Email', _emailController,
+                  keyboardType: TextInputType.emailAddress),
               const SizedBox(height: 24),
               _buildTextField(context, 'Bio', _bioController, maxLines: 4),
               const SizedBox(height: 40),
-               Text(
+              Text(
                 'Changing your profile information will be visible to everyone on BeatFlow.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall,
@@ -100,7 +106,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _buildTextField(BuildContext context, String label, TextEditingController controller, {TextInputType keyboardType = TextInputType.text, int maxLines = 1}) {
+  Widget _buildTextField(
+      BuildContext context, String label, TextEditingController controller,
+      {TextInputType keyboardType = TextInputType.text, int maxLines = 1}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -139,4 +147,3 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 }
-

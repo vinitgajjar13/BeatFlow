@@ -15,19 +15,31 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: [
           _buildSectionHeader(context, 'Account'),
-          _buildSettingsTile(context, Icons.person_rounded, 'Managing Account', 'Privacy, security, change email'),
-          _buildSettingsTile(context, Icons.security_rounded, 'Security', 'Password, two-factor authentication'),
+          _buildSettingsTile(context, Icons.person_rounded, 'Managing Account',
+              'Privacy, security, change email'),
+          _buildSettingsTile(context, Icons.security_rounded, 'Security',
+              'Password, two-factor authentication'),
           _buildSectionHeader(context, 'Preferences'),
-          _buildSettingsTile(context, Icons.dark_mode_rounded, 'Appearance', 'Dark mode, theme colors', isSwitch: true, value: true),
-          _buildSettingsTile(context, Icons.notifications_rounded, 'Notifications', 'Push notifications, email alerts'),
-          _buildSettingsTile(context, Icons.language_rounded, 'Language', 'English (English)'),
+          _buildSettingsTile(context, Icons.dark_mode_rounded, 'Appearance',
+              'Dark mode, theme colors',
+              isSwitch: true, value: true),
+          _buildSettingsTile(context, Icons.notifications_rounded,
+              'Notifications', 'Push notifications, email alerts'),
+          _buildSettingsTile(
+              context, Icons.language_rounded, 'Language', 'English (English)'),
           _buildSectionHeader(context, 'Music Quality'),
-          _buildSettingsTile(context, Icons.high_quality_rounded, 'Audio Quality', 'Very High'),
-          _buildSettingsTile(context, Icons.download_for_offline_rounded, 'Downloads', 'Download over Wi-Fi only', isSwitch: true, value: false),
+          _buildSettingsTile(context, Icons.high_quality_rounded,
+              'Audio Quality', 'Very High'),
+          _buildSettingsTile(context, Icons.download_for_offline_rounded,
+              'Downloads', 'Download over Wi-Fi only',
+              isSwitch: true, value: false),
           _buildSectionHeader(context, 'About'),
-          _buildSettingsTile(context, Icons.info_rounded, 'About BeatFlow', 'Version 1.0.0'),
-          _buildSettingsTile(context, Icons.help_rounded, 'Help & Support', 'FAQs, contact us'),
-          _buildSettingsTile(context, Icons.description_rounded, 'Terms of Service', 'Read our legal documents'),
+          _buildSettingsTile(
+              context, Icons.info_rounded, 'About BeatFlow', 'Version 1.0.0'),
+          _buildSettingsTile(context, Icons.help_rounded, 'Help & Support',
+              'FAQs, contact us'),
+          _buildSettingsTile(context, Icons.description_rounded,
+              'Terms of Service', 'Read our legal documents'),
           const SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -40,7 +52,8 @@ class SettingsScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: AppTheme.geometry),
                 elevation: 0,
               ),
-              child: const Text('Delete Account', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text('Delete Account',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ),
           const SizedBox(height: 48),
@@ -64,17 +77,22 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsTile(BuildContext context, IconData icon, String title, String subtitle, {bool isSwitch = false, bool value = false}) {
+  Widget _buildSettingsTile(
+      BuildContext context, IconData icon, String title, String subtitle,
+      {bool isSwitch = false, bool value = false}) {
     return ListTile(
       leading: Icon(icon, color: Theme.of(context).iconTheme.color),
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
       subtitle: Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
-      trailing: isSwitch 
-          ? Switch(value: value, onChanged: (v) {}, activeThumbColor: AppTheme.primaryColor)
-          : Icon(Icons.chevron_right_rounded, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.5), size: 20),
+      trailing: isSwitch
+          ? Switch(
+              value: value,
+              onChanged: (v) {},
+              activeThumbColor: AppTheme.primaryColor)
+          : Icon(Icons.chevron_right_rounded,
+              color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.5),
+              size: 20),
       onTap: isSwitch ? null : () {},
     );
   }
 }
-
-

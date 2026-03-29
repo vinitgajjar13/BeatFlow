@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../providers/music_provider.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -58,7 +59,7 @@ class CategoryDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(
+                  Text(
                     'Popular in $categoryName',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
@@ -69,22 +70,31 @@ class CategoryDetailScreen extends StatelessWidget {
           ),
           Consumer<MusicProvider>(
             builder: (context, provider, _) {
-              // In a real app, we would filter by genre. 
+              // In a real app, we would filter by genre.
               // For now, let's just show some songs or all songs as a placeholder.
-              final categorizedSongs = provider.allSongs; 
-              
+              final categorizedSongs = provider.allSongs;
+
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     final song = categorizedSongs[index];
                     return ListTile(
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: Image.network(
-                          song.albumArt,
-                          width: 48,
-                          height: 48,
-                          fit: BoxFit.cover,
+                      leading: SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: CachedNetworkImage(
+                            imageUrl: song.albumArt,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) => Container(
+                              color: Colors.grey.withValues(alpha: 0.2),
+                              child: const Icon(Icons.music_note_rounded,
+                                  color: Colors.white24, size: 24),
+                            ),
+                          ),
                         ),
                       ),
                       title: Text(
@@ -93,7 +103,8 @@ class CategoryDetailScreen extends StatelessWidget {
                       ),
                       subtitle: Text(
                         song.artist,
-                        style: TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+                        style: TextStyle(
+                            color: AppTheme.textSecondary, fontSize: 12),
                       ),
                       trailing: const Icon(Icons.more_vert, color: Colors.grey),
                       onTap: () {
@@ -115,15 +126,20 @@ class CategoryDetailScreen extends StatelessWidget {
 
   IconData _getCategoryIcon(String name) {
     switch (name.toLowerCase()) {
-      case 'pop': return Icons.face;
-      case 'rock': return Icons.music_note;
-      case 'hip-hop': return Icons.mic;
-      case 'indie': return Icons.favorite;
-      case 'electronic': return Icons.flash_on;
-      case 'r&b': return Icons.waves;
-      default: return Icons.music_note;
+      case 'pop':
+        return Icons.face;
+      case 'rock':
+        return Icons.music_note;
+      case 'hip-hop':
+        return Icons.mic;
+      case 'indie':
+        return Icons.favorite;
+      case 'electronic':
+        return Icons.flash_on;
+      case 'r&b':
+        return Icons.waves;
+      default:
+        return Icons.music_note;
     }
   }
 }
-
-

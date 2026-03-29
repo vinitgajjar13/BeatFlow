@@ -19,6 +19,7 @@ import 'screens/profile/settings_screen.dart';
 import 'screens/profile/edit_profile_screen.dart';
 import 'screens/profile/notifications_screen.dart';
 import 'widgets/aura_background.dart';
+import 'widgets/mini_player.dart';
 import 'models/artist_model.dart';
 import 'models/album_model.dart';
 
@@ -111,6 +112,12 @@ class _RootNavigatorState extends State<_RootNavigator> {
             index: _selectedIndex,
             children: _screens,
           ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 88, // Above Gatsby Nav Bar
+            child: const MiniPlayer(),
+          ),
         ],
       ),
       bottomNavigationBar: _buildGlassyNavBar(context),
@@ -121,10 +128,11 @@ class _RootNavigatorState extends State<_RootNavigator> {
     return Consumer<MusicProvider>(
       builder: (context, musicProvider, child) {
         final bool isDark = Theme.of(context).brightness == Brightness.dark;
-        
+
         return AuraBackground(
           isDarkMode: isDark,
-          accentColor: musicProvider.currentSong != null ? AppTheme.primaryColor : null,
+          accentColor:
+              musicProvider.currentSong != null ? AppTheme.primaryColor : null,
         );
       },
     );
@@ -133,16 +141,18 @@ class _RootNavigatorState extends State<_RootNavigator> {
   Widget _buildGlassyNavBar(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double horizontalMargin = screenWidth < 360 ? 12 : 24;
-    
+
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: 16),
+        margin:
+            EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: 16),
         height: 72,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(36),
-          color: Theme.of(context).cardColor, // Uses transparent glassy definition from AppTheme
+          color: Theme.of(context)
+              .cardColor, // Uses transparent glassy definition from AppTheme
           boxShadow: [
-             BoxShadow(
+            BoxShadow(
               color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 20,
               offset: const Offset(0, 10),
@@ -181,7 +191,9 @@ class _RootNavigatorState extends State<_RootNavigator> {
           vertical: 12,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor.withValues(alpha: 0.15) : Colors.transparent,
+          color: isSelected
+              ? AppTheme.primaryColor.withValues(alpha: 0.15)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Row(
@@ -189,9 +201,10 @@ class _RootNavigatorState extends State<_RootNavigator> {
           children: [
             Icon(
               icon,
-              color: isSelected 
-                  ? AppTheme.primaryColor 
-                  : Theme.of(context).iconTheme.color?.withValues(alpha: 0.6) ?? Colors.grey,
+              color: isSelected
+                  ? AppTheme.primaryColor
+                  : Theme.of(context).iconTheme.color?.withValues(alpha: 0.6) ??
+                      Colors.grey,
               size: 26,
             ),
             if (isSelected) ...[
@@ -211,4 +224,3 @@ class _RootNavigatorState extends State<_RootNavigator> {
     );
   }
 }
-

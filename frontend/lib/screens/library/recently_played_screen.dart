@@ -42,4 +42,3 @@ class RecentlyPlayedScreen extends StatelessWidget {
     );
   }
 }
-

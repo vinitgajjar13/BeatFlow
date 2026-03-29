@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -34,7 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent, // Let ambient background show through
+      backgroundColor:
+          Colors.transparent, // Let ambient background show through
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -53,32 +55,45 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           'Good Morning,',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                letterSpacing: 1.5,
-                                fontWeight: FontWeight.bold,
-                                textBaseline: TextBaseline.alphabetic,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    letterSpacing: 1.5,
+                                    fontWeight: FontWeight.bold,
+                                    textBaseline: TextBaseline.alphabetic,
+                                  ),
                         ),
                         Text(
                           'Karsh',
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayLarge
+                              ?.copyWith(
                                 fontSize: 40,
                                 height: 1.1,
                               ),
                         ),
                       ],
-                    ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
+                    )
+                        .animate()
+                        .fadeIn(duration: 600.ms)
+                        .slideY(begin: 0.2, end: 0),
                     Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.notifications_none_rounded, size: 28),
-                          onPressed: () => Navigator.pushNamed(context, '/notifications'),
+                          icon: const Icon(Icons.notifications_none_rounded,
+                              size: 28),
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.pushNamed(context, '/notifications');
+                          },
                         ),
                         const SizedBox(width: 8),
                         Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
+                            border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.3),
+                                width: 2),
                           ),
                           child: const CircleAvatar(
                             radius: 22,
@@ -88,7 +103,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ],
-                    ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: 0.2, end: 0),
+                    )
+                        .animate()
+                        .fadeIn(duration: 600.ms, delay: 200.ms)
+                        .slideY(begin: 0.2, end: 0),
                   ],
                 ),
               ),
@@ -113,9 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   Consumer<MusicProvider>(
                     builder: (context, provider, _) {
                       final items = provider.allSongs.take(4).toList();
-                      final double screenWidth = MediaQuery.sizeOf(context).width;
+                      final double screenWidth =
+                          MediaQuery.sizeOf(context).width;
                       final int crossAxisCount = screenWidth > 600 ? 3 : 2;
-                      
+
                       return GridView.builder(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
@@ -131,7 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (_isLoading) {
                             return Shimmer.fromColors(
                               baseColor: Theme.of(context).cardColor,
-                              highlightColor: Colors.white.withValues(alpha: 0.1),
+                              highlightColor:
+                                  Colors.white.withValues(alpha: 0.1),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -141,28 +161,44 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           }
                           final song = items[index];
-                          return ClipRRect(
-                            borderRadius: AppTheme.geometry,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).cardTheme.color,
-                                borderRadius: AppTheme.geometry,
-                                border: Border.all(color: Theme.of(context).dividerColor),
-                              ),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: AppTheme.radius,
-                                      bottomLeft: AppTheme.radius,
+                          return GestureDetector(
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              provider.playSong(song);
+                            },
+                            child: ClipRRect(
+                              borderRadius: AppTheme.geometry,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardTheme.color,
+                                  borderRadius: AppTheme.geometry,
+                                  border: Border.all(
+                                      color: Theme.of(context).dividerColor),
+                                ),
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: AppTheme.radius,
+                                        bottomLeft: AppTheme.radius,
+                                      ),
+                                      child: CachedNetworkImage(
+                                        imageUrl: song.albumArt,
+                                        width: 64,
+                                        height: 64,
+                                        fit: BoxFit.cover,
+                                        errorWidget: (context, url, error) =>
+                                            Container(
+                                          width: 64,
+                                          height: 64,
+                                          color: Colors.grey
+                                              .withValues(alpha: 0.2),
+                                          child: const Icon(
+                                              Icons.music_note_rounded,
+                                              color: Colors.white24),
+                                        ),
+                                      ),
                                     ),
-                                    child: CachedNetworkImage(
-                                      imageUrl: song.albumArt,
-                                      width: 64,
-                                      height: 64,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
@@ -178,8 +214,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                            ).animate().fadeIn(duration: 400.ms, delay: (400 + (index * 100)).ms).slideX(begin: 0.1, end: 0);
-                          },
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
@@ -206,9 +243,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 20),
                   Consumer<MusicProvider>(
                     builder: (context, provider, _) {
-                      final double screenWidth = MediaQuery.sizeOf(context).width;
+                      final double screenWidth =
+                          MediaQuery.sizeOf(context).width;
                       final double cardWidth = screenWidth > 600 ? 220 : 180;
-                      
+
                       return SizedBox(
                         height: cardWidth + 90,
                         child: ListView.builder(
@@ -224,8 +262,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                             return GestureDetector(
                               onTap: () {
+                                HapticFeedback.lightImpact();
                                 Navigator.pushNamed(
-                                  context, 
+                                  context,
                                   '/album-detail',
                                   arguments: album,
                                 );
@@ -237,13 +276,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Hero(
-                                      tag: 'album-${album.id}',
+                                      tag: 'album-${song.id}',
                                       child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius: AppTheme.geometry,
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.black.withValues(alpha: 0.2),
+                                              color: Colors.black
+                                                  .withValues(alpha: 0.2),
                                               blurRadius: 20,
                                               offset: const Offset(0, 10),
                                             ),
@@ -258,21 +298,54 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 width: cardWidth,
                                                 height: cardWidth,
                                                 fit: BoxFit.cover,
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Container(
+                                                  width: cardWidth,
+                                                  height: cardWidth,
+                                                  color: Colors.grey
+                                                      .withValues(alpha: 0.2),
+                                                  child: const Icon(
+                                                      Icons.music_note_rounded,
+                                                      color: Colors.white24,
+                                                      size: 40),
+                                                ),
                                               ),
                                               // Glassy play button overlay
                                               Positioned(
                                                 bottom: 12,
                                                 right: 12,
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  child: Container(
-                                                    padding: const EdgeInsets.all(8),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white.withValues(alpha: 0.4),
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(color: Colors.white.withValues(alpha: 0.5)),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    HapticFeedback
+                                                        .mediumImpact();
+                                                    provider.playSong(song);
+                                                  },
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white
+                                                            .withValues(
+                                                                alpha: 0.4),
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color: Colors.white
+                                                                .withValues(
+                                                                    alpha:
+                                                                        0.5)),
+                                                      ),
+                                                      child: const Icon(
+                                                          Icons
+                                                              .play_arrow_rounded,
+                                                          color: Colors.white,
+                                                          size: 24),
                                                     ),
-                                                    child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 24),
                                                   ),
                                                 ),
                                               ),
@@ -284,7 +357,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const SizedBox(height: 16),
                                     Text(
                                       song.title,
-                                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                           ),
@@ -294,20 +370,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const SizedBox(height: 4),
                                     Text(
                                       song.artist,
-                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
                               ),
-                            ).animate().fadeIn(duration: 500.ms, delay: (600 + (index * 100)).ms).slideX(begin: 0.2, end: 0);
+                            )
+                                .animate()
+                                .fadeIn(
+                                    duration: 500.ms,
+                                    delay: (600 + (index * 100)).ms)
+                                .slideX(begin: 0.2, end: 0);
                           },
                         ),
                       );
                     },
                   ),
-                  const SizedBox(height: 120), // Offset for floating nav bar
+                  const SizedBox(
+                      height: 160), // Space for MiniPlayer + Bottom Nav Bar
                 ],
               ),
             ),
@@ -317,4 +401,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

@@ -63,7 +63,8 @@ class DiscoverScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 12),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               child: Text(
                                 artist.name,
                                 textAlign: TextAlign.center,
@@ -121,4 +122,3 @@ class DiscoverScreen extends StatelessWidget {
     );
   }
 }
-

@@ -3,25 +3,33 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // --- Modern Vibrant Colors ---
-  static const Color primaryColor = Color(0xFF1DB954); // Vibrant Spotify-style Green
-  static const Color secondaryColor = Color(0xFFFF7A00); // Vibrant Onboarding Orange
+  static const Color primaryColor =
+      Color(0xFF1DB954); // Vibrant Spotify-style Green
+  static const Color secondaryColor =
+      Color(0xFFFF7A00); // Vibrant Onboarding Orange
   static const Color accentBlue = Color(0xFF00C2FF); // Modern Cyan Accent
-  
+
   // Dark Palette
-  static const Color darkBackground = Colors.transparent; // Transparent for dynamic ambient bg
+  static const Color darkBackground =
+      Colors.transparent; // Transparent for dynamic ambient bg
   static const Color darkSurface = Color(0xFF161616);
-  static const Color darkCard = Color(0x33FFFFFF); // 20% White for glassy effect
+  static const Color darkCard =
+      Color(0x33FFFFFF); // 20% White for glassy effect
   static const Color darkTextPrimary = Color(0xFFFFFFFF);
   static const Color darkTextSecondary = Color(0x99FFFFFF);
-  static const Color auraBaseDark = Color(0xFF080808); // Even deeper for minimal look
+  static const Color auraBaseDark =
+      Color(0xFF080808); // Even deeper for minimal look
 
   // Light Palette
-  static const Color lightBackground = Colors.transparent; // Transparent for dynamic ambient bg
+  static const Color lightBackground =
+      Colors.transparent; // Transparent for dynamic ambient bg
   static const Color lightSurface = Color(0xFFFFFFFF);
-  static const Color lightCard = Color(0x33000000); // 20% Black for glassy effect
+  static const Color lightCard =
+      Color(0x33000000); // 20% Black for glassy effect
   static const Color lightTextPrimary = Color(0xFF121212);
   static const Color lightTextSecondary = Color(0x99121212);
-  static const Color auraBaseLight = Color(0xFFFDFDFD); // Ultra-clean light base
+  static const Color auraBaseLight =
+      Color(0xFFFDFDFD); // Ultra-clean light base
 
   // Gradients for Vibrancy
   static const LinearGradient primaryGradient = LinearGradient(
@@ -70,8 +78,10 @@ class AppTheme {
       scaffoldBackgroundColor: darkBackground,
       primaryColor: primaryColor,
       fontFamily: GoogleFonts.outfit().fontFamily,
-      textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).copyWith(
-        displayLarge: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -1.5),
+      textTheme:
+          GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).copyWith(
+        displayLarge:
+            const TextStyle(fontWeight: FontWeight.w900, letterSpacing: -1.5),
         headlineMedium: const TextStyle(fontWeight: FontWeight.w800),
         titleLarge: const TextStyle(fontWeight: FontWeight.bold),
       ),
@@ -86,7 +96,8 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: geometry,
-          side: const BorderSide(color: Color(0x1AFFFFFF), width: 1), // Glassy subtle border
+          side: const BorderSide(
+              color: Color(0x1AFFFFFF), width: 1), // Glassy subtle border
         ),
       ),
       iconTheme: const IconThemeData(color: Colors.white, size: 28),
@@ -110,10 +121,16 @@ class AppTheme {
       scaffoldBackgroundColor: const Color.fromARGB(0, 0, 0, 0),
       primaryColor: primaryColor,
       fontFamily: GoogleFonts.outfit().fontFamily,
-      textTheme: GoogleFonts.outfitTextTheme(ThemeData.light().textTheme).copyWith(
-        displayLarge: const TextStyle(color: lightTextPrimary, fontWeight: FontWeight.w900, letterSpacing: -1.5),
-        headlineMedium: const TextStyle(color: lightTextPrimary, fontWeight: FontWeight.w800),
-        titleLarge: const TextStyle(color: lightTextPrimary, fontWeight: FontWeight.bold),
+      textTheme:
+          GoogleFonts.outfitTextTheme(ThemeData.light().textTheme).copyWith(
+        displayLarge: const TextStyle(
+            color: lightTextPrimary,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -1.5),
+        headlineMedium: const TextStyle(
+            color: lightTextPrimary, fontWeight: FontWeight.w800),
+        titleLarge: const TextStyle(
+            color: lightTextPrimary, fontWeight: FontWeight.bold),
         bodyLarge: const TextStyle(color: lightTextPrimary),
         bodyMedium: const TextStyle(color: lightTextSecondary),
       ),
@@ -122,14 +139,16 @@ class AppTheme {
         elevation: 0,
         centerTitle: false,
         iconTheme: IconThemeData(color: lightTextPrimary),
-        titleTextStyle: TextStyle(color: lightTextPrimary, fontSize: 20, fontWeight: FontWeight.w800),
+        titleTextStyle: TextStyle(
+            color: lightTextPrimary, fontSize: 20, fontWeight: FontWeight.w800),
       ),
       cardTheme: CardThemeData(
         color: lightCard,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: geometry,
-          side: const BorderSide(color: Color(0x1A000000), width: 1), // Glassy subtle border
+          side: const BorderSide(
+              color: Color(0x1A000000), width: 1), // Glassy subtle border
         ),
       ),
       iconTheme: const IconThemeData(color: lightTextPrimary, size: 28),
