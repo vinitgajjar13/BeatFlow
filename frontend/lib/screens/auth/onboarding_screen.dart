@@ -1,3 +1,4 @@
+import 'package:beatflow/core/utils/image.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -17,21 +18,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {
       'title': 'Music, made\nfor you.',
       'subtitle': 'Discover songs, artists, and playlists tailored to your vibe',
-      'image': 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=800&auto=format&fit=crop',
+      'image': TImage.onboarding1,
       'titleColor': AppTheme.onboardingOrange,
       'isWhiteNext': true,
     },
     {
       'title': 'Creating your\nmusic world.',
       'subtitle': 'Handpicking songs just for you 🎶',
-      'image': 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=800&auto=format&fit=crop',
+      'image': TImage.onboarding2,
       'titleColor': Colors.white,
       'isWhiteNext': true,
     },
     {
       'title': 'Choose your\nfavorite artists',
       'subtitle': 'We\'ll use this to build your perfect mix',
-      'image': 'https://images.unsplash.com/photo-1459749411177-042180ce673c?q=80&w=800&auto=format&fit=crop',
+      'image': TImage.onboarding3,
       'titleColor': AppTheme.onboardingOrange,
       'isWhiteNext': false,
     },
@@ -94,7 +95,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     offset: Offset(imageOffsetX, 0),
                     child: Transform.scale(
                       scale: imageScale,
-                      child: Image.network(
+                      child: Image.asset(
                         page['image'],
                         fit: BoxFit.cover,
                       ),
@@ -132,7 +133,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               page['title'],
                               style: TextStyle(
                                 color: page['titleColor'],
-                                fontSize: isSmallScreen ? 36 : 48,
+                                fontSize: isSmallScreen ? 32 : 44,
                                 fontWeight: FontWeight.bold,
                                 height: 1.1,
                               ),

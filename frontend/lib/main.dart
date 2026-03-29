@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'providers/music_provider.dart';
 import 'providers/player_provider.dart';
 import 'core/theme/app_theme.dart';
@@ -10,6 +9,7 @@ import 'screens/search/search_screen.dart';
 import 'screens/library/favorites_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/auth/onboarding_screen.dart';
+import 'screens/auth/splash_screen.dart';
 import 'screens/player/player_screen.dart';
 import 'screens/library/recently_played_screen.dart';
 import 'screens/artist/artist_detail_screen.dart';
@@ -18,6 +18,7 @@ import 'screens/discover/category_detail_screen.dart';
 import 'screens/profile/settings_screen.dart';
 import 'screens/profile/edit_profile_screen.dart';
 import 'screens/profile/notifications_screen.dart';
+import 'widgets/aura_background.dart';
 import 'models/artist_model.dart';
 import 'models/album_model.dart';
 
@@ -41,8 +42,9 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
-        initialRoute: '/onboarding',
+        initialRoute: '/splash',
         routes: {
+          '/splash': (context) => const SplashScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
           '/home': (context) => const _RootNavigator(),
           '/player': (context) => const PlayerScreen(),
@@ -118,49 +120,23 @@ class _RootNavigatorState extends State<_RootNavigator> {
   Widget _buildDynamicBackground(BuildContext context) {
     return Consumer<MusicProvider>(
       builder: (context, musicProvider, child) {
-        final currentSong = musicProvider.currentSong;
-        return AnimatedSwitcher(
-          duration: const Duration(seconds: 1),
-          child: Container(
-            key: ValueKey(currentSong?.id ?? 'default'),
-            decoration: BoxDecoration(
-              gradient: currentSong == null
-                  ? const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-                    )
-                  : null,
-            ),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                if (currentSong != null)
-                  ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
-                    child: CachedNetworkImage(
-                      imageUrl: currentSong.albumArt,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => const SizedBox(),
-                    ),
-                  ),
-                Container(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.black.withValues(alpha: 0.6)
-                      : Colors.white.withValues(alpha: 0.6),
-                ),
-              ],
-            ),
-          ),
+        final bool isDark = Theme.of(context).brightness == Brightness.dark;
+        
+        return AuraBackground(
+          isDarkMode: isDark,
+          accentColor: musicProvider.currentSong != null ? AppTheme.primaryColor : null,
         );
       },
     );
   }
 
   Widget _buildGlassyNavBar(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double horizontalMargin = screenWidth < 360 ? 12 : 24;
+    
     return SafeArea(
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        margin: EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: 16),
         height: 72,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(36),

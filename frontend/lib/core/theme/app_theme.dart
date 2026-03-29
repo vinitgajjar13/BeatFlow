@@ -13,6 +13,7 @@ class AppTheme {
   static const Color darkCard = Color(0x33FFFFFF); // 20% White for glassy effect
   static const Color darkTextPrimary = Color(0xFFFFFFFF);
   static const Color darkTextSecondary = Color(0x99FFFFFF);
+  static const Color auraBaseDark = Color(0xFF080808); // Even deeper for minimal look
 
   // Light Palette
   static const Color lightBackground = Colors.transparent; // Transparent for dynamic ambient bg
@@ -20,6 +21,7 @@ class AppTheme {
   static const Color lightCard = Color(0x33000000); // 20% Black for glassy effect
   static const Color lightTextPrimary = Color(0xFF121212);
   static const Color lightTextSecondary = Color(0x99121212);
+  static const Color auraBaseLight = Color(0xFFFDFDFD); // Ultra-clean light base
 
   // Gradients for Vibrancy
   static const LinearGradient primaryGradient = LinearGradient(
