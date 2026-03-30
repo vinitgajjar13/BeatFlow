@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../providers/music_provider.dart';
-import '../core/theme/app_theme.dart';
 
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({Key? key}) : super(key: key);
