@@ -68,8 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               .textTheme
                               .displayLarge
                               ?.copyWith(
-                                fontSize: 40,
-                                height: 1.1,
+                                fontSize: 44,
+                                height: 1.0,
+                                color: Colors.white,
                               ),
                         ),
                       ],
@@ -173,7 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: Theme.of(context).cardTheme.color,
                                   borderRadius: AppTheme.geometry,
                                   border: Border.all(
-                                      color: Theme.of(context).dividerColor),
+                                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                                    width: 1.5,
+                                  ),
                                 ),
                                 child: Row(
                                   children: [

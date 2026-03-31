@@ -199,11 +199,11 @@ class _PlayerScreenState extends State<PlayerScreen>
                           horizontal: 20, vertical: 20),
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(36),
+                        color: Theme.of(context).cardColor.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(38),
                         border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.1),
-                            width: 1),
+                            color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                            width: 1.5),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(36),
@@ -250,8 +250,8 @@ class _PlayerScreenState extends State<PlayerScreen>
                                           : Icons.favorite_border_rounded,
                                       color: musicProvider.favoriteSongs
                                               .contains(song)
-                                          ? Colors.redAccent
-                                          : Colors.white,
+                                          ? Theme.of(context).colorScheme.secondary // Magenta
+                                        : Colors.white,
                                       size: 28,
                                     ),
                                     onPressed: () {
@@ -339,10 +339,10 @@ class _PlayerScreenState extends State<PlayerScreen>
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: AppTheme.primaryColor
-                                                .withValues(alpha: 0.3),
-                                            blurRadius: 20,
-                                            spreadRadius: 2,
+                                            color: Theme.of(context).primaryColor
+                                                .withValues(alpha: 0.4),
+                                            blurRadius: 30,
+                                            spreadRadius: 4,
                                           ),
                                         ],
                                       ),

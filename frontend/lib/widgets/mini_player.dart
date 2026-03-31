@@ -18,47 +18,49 @@ class MiniPlayer extends StatelessWidget {
         return GestureDetector(
           onTap: () => Navigator.pushNamed(context, '/player'),
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            height: 70,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            height: 72,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 255, 102, 0),
-              borderRadius: BorderRadius.circular(20),
+              color: Theme.of(context).cardColor.withValues(alpha: 0.4),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.1), width: 1),
+                color: Theme.of(context).primaryColor.withValues(alpha: 0.15),
+                width: 1.5,
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.3),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(24),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: Row(
                     children: [
                       // Album Art with Hero
                       Hero(
                         tag: 'album-${song.id}',
                         child: Container(
-                          width: 48,
-                          height: 48,
+                          width: 52,
+                          height: 52,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(14),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.2),
-                                blurRadius: 8,
+                                color: Colors.black.withValues(alpha: 0.3),
+                                blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
                             ],
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(14),
                             child: CachedNetworkImage(
                               imageUrl: song.albumArt,
                               fit: BoxFit.cover,
@@ -66,7 +68,7 @@ class MiniPlayer extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 14),
                       // Title & Artist
                       Expanded(
                         child: Column(
@@ -77,18 +79,20 @@ class MiniPlayer extends StatelessWidget {
                               song.title,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w900,
                                 fontSize: 15,
-                                letterSpacing: 0.2,
+                                letterSpacing: 0.1,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
+                            const SizedBox(height: 2),
                             Text(
                               song.artist,
                               style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.6),
+                                color: Colors.white.withValues(alpha: 0.5),
                                 fontSize: 13,
+                                letterSpacing: 0.2,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -97,18 +101,26 @@ class MiniPlayer extends StatelessWidget {
                         ),
                       ),
                       // Controls
-                      IconButton(
-                        icon: Icon(
-                          musicProvider.isPlaying
-                              ? Icons.pause_rounded
-                              : Icons.play_arrow_rounded,
-                          color: Colors.white,
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withValues(alpha: 0.05),
                         ),
-                        onPressed: () => musicProvider.togglePlayPause(),
+                        child: IconButton(
+                          icon: Icon(
+                            musicProvider.isPlaying
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded,
+                            color: Theme.of(context).primaryColor,
+                            size: 28,
+                          ),
+                          onPressed: () => musicProvider.togglePlayPause(),
+                        ),
                       ),
+                      const SizedBox(width: 4),
                       IconButton(
                         icon: const Icon(Icons.skip_next_rounded,
-                            color: Colors.white),
+                            color: Colors.white, size: 28),
                         onPressed: () => musicProvider.nextSong(),
                       ),
                     ],
@@ -119,6 +131,7 @@ class MiniPlayer extends StatelessWidget {
           ).animate().slideY(
               begin: 1.0, end: 0, duration: 400.ms, curve: Curves.easeOutCubic),
         );
+
       },
     );
   }

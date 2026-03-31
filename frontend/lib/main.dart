@@ -140,29 +140,32 @@ class _RootNavigatorState extends State<_RootNavigator> {
 
   Widget _buildGlassyNavBar(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double horizontalMargin = screenWidth < 360 ? 12 : 24;
+    final double horizontalMargin = screenWidth < 360 ? 12 : 20;
 
     return SafeArea(
       child: Container(
         margin:
-            EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: 16),
-        height: 72,
+            EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: 20),
+        height: 76,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(36),
-          color: Theme.of(context)
-              .cardColor, // Uses transparent glassy definition from AppTheme
+          borderRadius: BorderRadius.circular(38),
+          color: Theme.of(context).cardColor.withValues(alpha: 0.3),
+          border: Border.all(
+            color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+            width: 1.5,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+              color: Colors.black.withValues(alpha: 0.25),
+              blurRadius: 30,
+              offset: const Offset(0, 12),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(36),
+          borderRadius: BorderRadius.circular(38),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -180,21 +183,29 @@ class _RootNavigatorState extends State<_RootNavigator> {
 
   Widget _buildNavItem(IconData icon, int index, String label) {
     final isSelected = _selectedIndex == index;
+    final primaryColor = Theme.of(context).primaryColor;
+
     return GestureDetector(
       onTap: () => setState(() => _selectedIndex = index),
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOutCubic,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutQuart,
         padding: EdgeInsets.symmetric(
-          horizontal: isSelected ? 20 : 12,
+          horizontal: isSelected ? 18 : 12,
           vertical: 12,
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.primaryColor.withValues(alpha: 0.15)
+              ? primaryColor.withValues(alpha: 0.12)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isSelected
+                ? primaryColor.withValues(alpha: 0.2)
+                : Colors.transparent,
+            width: 1,
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -202,19 +213,19 @@ class _RootNavigatorState extends State<_RootNavigator> {
             Icon(
               icon,
               color: isSelected
-                  ? AppTheme.primaryColor
-                  : Theme.of(context).iconTheme.color?.withValues(alpha: 0.6) ??
-                      Colors.grey,
+                  ? primaryColor
+                  : Colors.white.withValues(alpha: 0.45),
               size: 26,
             ),
             if (isSelected) ...[
               const SizedBox(width: 8),
               Text(
                 label,
-                style: const TextStyle(
-                  color: AppTheme.primaryColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 13,
+                  letterSpacing: 0.5,
                 ),
               ),
             ]
@@ -223,4 +234,5 @@ class _RootNavigatorState extends State<_RootNavigator> {
       ),
     );
   }
+
 }
